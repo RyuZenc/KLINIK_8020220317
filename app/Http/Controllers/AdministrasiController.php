@@ -106,6 +106,8 @@ class AdministrasiController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $administrasi = \App\Models\Administrasi::findOrFail($id);
+        $administrasi->delete();
+        return back()->with('pesan', 'Data Sudah Dihapus');
     }
 }

@@ -66,7 +66,17 @@ class AdministrasiController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data['administrasi'] = \App\Models\Administrasi::findOrFail($id);
+
+        $data['list_pasien'] =
+            \App\Models\Pasien::selectRaw("id,concat(kode_pasien,'-',nama_pasien) as tampil")
+            ->pluck('tampil', 'id');
+
+        $data['list_dokter'] =
+            \App\Models\Dokter::selectRaw("id,concat(kode_dokter,'-',nama_dokter) as tampil")
+            ->pluck('tampil', 'id');
+
+        return view('administrasi\administrasi_edit', $data);
     }
 
     /**
@@ -74,7 +84,21 @@ class AdministrasiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required',
+            'pasien_id' => 'required',
+            'dokter_id' => 'required',
+            'biaya' => 'required'
+        ]);
+
+        $administrasi = \App\Models\Administrasi::findOrFail($id);
+        $administrasi->tanggal = $request->tanggal;
+        $administrasi->pasien_id = $request->pasien_id;
+        $administrasi->dokter_id = $request->dokter_id;
+        $administrasi->biaya = $request->biaya;
+        $administrasi->save();
+
+        return redirect('/administrasi')->with('pesan', 'Data sudah DiUpdate');
     }
 
     /**

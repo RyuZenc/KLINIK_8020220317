@@ -16,13 +16,29 @@ class PasienController extends Controller
         return view('pasien/pasien_index', $data);
     }
 
+    public function cari(Request $request)
+    {
+        $cari = $request->get('search');
+        $data['pasien'] = \App\Models\Pasien::where('nama_pasien', 'like', '%' . $cari . '%')
+            ->orwhere('alamat', 'like', '%' . $cari . '%')->paginate(5);
+
+        $data['judul'] = 'Data-Data Pasien';
+        return view('pasien/pasien_index', $data);
+    }
+
+    public function registrasi()
+    {
+        $data['list_jk'] = ['Pria', 'Wanita'];
+        return view('registrasi_form', $data);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
         $data['list_kelamin'] = ['Laki-Laki', 'Perempuan'];
-        $data['list_status'] = ['Aktif', 'Tidak Aktif'];
+        $data['list_status'] = ['Belum Menikah', 'Sudah Menikah'];
         return view('pasien/pasien_create', $data);
     }
 

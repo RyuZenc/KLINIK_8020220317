@@ -17,9 +17,7 @@ use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\AdministrasiController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PasienController::class, 'registrasi']);
 
 Auth::routes();
 
@@ -30,6 +28,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('pasien', PasienController::class);
     Route::get('pasien/laporan/cetak', [PasienController::class, 'laporan']);
+    Route::get('pasien/cari/data', [PasienController::class, 'cari']);
 
     Route::resource('administrasi', AdministrasiController::class);
     Route::get('administrasi/laporan/cetak', [AdministrasiController::class, 'laporan']);
